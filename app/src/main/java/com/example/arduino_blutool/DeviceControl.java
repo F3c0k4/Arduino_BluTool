@@ -41,32 +41,18 @@ public class DeviceControl extends AppCompatActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if (Bt_Socket!=null)
                 {
-                    if (Bt_Socket!=null)
-                    {
-                        try{
+                    try{
 
-                            Bt_Socket.getOutputStream().write("1".toString().getBytes());
-                        }
-                        catch (IOException e)
-                        {
-                            msg("Error");
-                        }
+                        Bt_Socket.getOutputStream().write("13\n".getBytes());
+                        //Bt_Socket.getOutputStream().write("\n".getBytes());
+                        msg("Output written");
+
                     }
-                }
-                else
-                {
-                    if (Bt_Socket!=null)
+                    catch (IOException e)
                     {
-                        try{
-
-                            Bt_Socket.getOutputStream().write("0".toString().getBytes());
-                        }
-                        catch (IOException e)
-                        {
-                            msg("Error");
-                        }
+                        msg("Error");
                     }
                 }
 
