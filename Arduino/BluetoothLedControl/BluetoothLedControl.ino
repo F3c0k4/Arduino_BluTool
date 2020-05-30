@@ -4,6 +4,8 @@ void setup()
 {
   Serial.begin(9600);         //Sets the data rate in bits per second (baud) for serial data transmission
   pinMode(13, OUTPUT);        //Sets digital pin 13 as output pin
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
 }
 void loop()
 {
@@ -21,13 +23,17 @@ void loop()
       
       Serial.print("Final data:");
       Serial.print(data);
-      Serial.print("asd");
+
     
-      if((data.equals("13")) || (data == '13') || (data == 13)){
+      if((data.equals("13"))){
          ToggleLed(13);
-         Serial.println("Toggling done");
-         data = "";
-  
+         //Serial.println("Toggling done");
+      }
+      if((data.equals("12"))){
+        ToggleLed(12);
+      }
+      if((data.equals("11"))){
+        ToggleLed(11);
       }
     }
     
@@ -43,4 +49,8 @@ void ToggleLed(int led_nr){
   }else{
     digitalWrite(led_nr, HIGH);
   }
+  Serial.print("Led nr ");
+  Serial.print(led_nr);
+  Serial.println(" up!");
+  data = "";
 }

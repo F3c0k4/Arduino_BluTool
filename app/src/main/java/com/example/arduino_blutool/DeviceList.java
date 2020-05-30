@@ -56,11 +56,11 @@ public class DeviceList extends AppCompatActivity {
         String prntString = "";
 
         if (paired_Devices.length > 0) {
-            for (BluetoothDevice bt : paired_Devices) {
+            /*for (BluetoothDevice bt : paired_Devices) {
                 list.add(bt.getName() + "\n" + bt.getAddress());
                 prntString = prntString + bt.getName() + "\n";
                 Toast.makeText(getApplicationContext(), prntString, Toast.LENGTH_LONG).show();
-            }
+            }*/
         } else {
             Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
         }
@@ -69,7 +69,7 @@ public class DeviceList extends AppCompatActivity {
 
     void FillSpinner() {
         SpinAdapter spinner_adp1 = new SpinAdapter(this,
-                android.R.layout.simple_list_item_1, paired_Devices);
+                R.layout.spinner_item, paired_Devices);
         spinner_adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         PairedSpinner.setAdapter(spinner_adp1);
 
@@ -77,7 +77,7 @@ public class DeviceList extends AppCompatActivity {
 
     public void TakeControl(View view) {
         BluetoothDevice selected_bd = (BluetoothDevice) PairedSpinner.getSelectedItem();
-        Toast.makeText(getApplicationContext(), selected_bd.getAddress(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), selected_bd.getAddress(), Toast.LENGTH_LONG).show();
         Intent i = new Intent(DeviceList.this, DeviceControl.class);
 
 
