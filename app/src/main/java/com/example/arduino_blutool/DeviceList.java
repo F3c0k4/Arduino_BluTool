@@ -16,15 +16,85 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class DeviceList extends AppCompatActivity {
-    private BluetoothAdapter myBluetooth = null;
-    private BluetoothDevice[] pairedDevices;
+    private BluetoothAdapter Bt_Adapter = null;
+    private BluetoothDevice[] paired_Devices;
     Spinner PairedSpinner;
     public static String EXTRA_ADDRESS = "device_address";
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+        setContentView(R.layout.activity_device_list);
+        Bt_Adapter = BluetoothAdapter.getDefaultAdapter();
+        PairedSpinner = (Spinner)findViewById(R.id.Spinner_Paired);
+        if(Bt_Adapter == null)
+        {
+
+            Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        else
+        {
+            if (Bt_Adapter.isEnabled())
+            {
+
+            }
+            else
+            {
+
+                Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(turnBTon,1);
+            }
+            GeneratePairedDevicesList();
+            FillSpinner();
+        }
+    }
+    public void GeneratePairedDevicesList()
+    {
+        paired_Devices = Bt_Adapter.getBondedDevices().toArray(new BluetoothDevice[0]);
+        ArrayList list = new ArrayList();
+        String prntString = "";
+
+        if (paired_Devices.length>0)
+        {
+            for(BluetoothDevice bt : paired_Devices)
+            {
+                list.add(bt.getName() + "\n" + bt.getAddress());
+                prntString = prntString + bt.getName() +"\n";
+                Toast.makeText(getApplicationContext(), prntString, Toast.LENGTH_LONG).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    void FillSpinner(){
+        SpinAdapter spinner_adp1 = new SpinAdapter(this,
+                android.R.layout.simple_list_item_1, paired_Devices);
+        spinner_adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        PairedSpinner.setAdapter(spinner_adp1);
+
+    }
+
+    public void TakeControl(View view){
+        BluetoothDevice selected_bd = (BluetoothDevice)PairedSpinner.getSelectedItem();
+        Toast.makeText(getApplicationContext(), selected_bd.getAddress(), Toast.LENGTH_LONG).show();
+        Intent i = new Intent(DeviceList.this, DeviceControl.class);
+
+
+        i.putExtra(EXTRA_ADDRESS, selected_bd.getAddress());
+        startActivity(i);
+    }
     public class SpinAdapter extends ArrayAdapter<BluetoothDevice>{
 
         // Your sent context
@@ -86,77 +156,5 @@ public class DeviceList extends AppCompatActivity {
             return label;
         }
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try
-        {
-            this.getSupportActionBar().hide();
-        }
-        catch (NullPointerException e){}
-        setContentView(R.layout.activity_device_list);
-        myBluetooth = BluetoothAdapter.getDefaultAdapter();
-        PairedSpinner = (Spinner)findViewById(R.id.spinner_paired);
-        if(myBluetooth == null)
-        {
 
-            Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
-            finish();
-        }
-        else
-        {
-            if (myBluetooth.isEnabled())
-            {
-
-            }
-            else
-            {
-
-                Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(turnBTon,1);
-            }
-            GeneratePairedDevicesList();
-            FillSpinner();
-        }
-    }
-
-    public void GeneratePairedDevicesList()
-    {
-        pairedDevices = myBluetooth.getBondedDevices().toArray(new BluetoothDevice[0]);
-        ArrayList list = new ArrayList();
-        String prntString = "";
-
-        if (pairedDevices.length>0)
-        {
-            for(BluetoothDevice bt : pairedDevices)
-            {
-                list.add(bt.getName() + "\n" + bt.getAddress());
-                prntString = prntString + bt.getName() +"\n";
-                Toast.makeText(getApplicationContext(), prntString, Toast.LENGTH_LONG).show();
-            }
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-    void FillSpinner(){
-        SpinAdapter spinner_adp1 = new SpinAdapter(this,
-                android.R.layout.simple_list_item_1, pairedDevices);
-        spinner_adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        PairedSpinner.setAdapter(spinner_adp1);
-
-    }
-
-    public void TakeControl(View view){
-        BluetoothDevice selected_bd = (BluetoothDevice)PairedSpinner.getSelectedItem();
-        Toast.makeText(getApplicationContext(), selected_bd.getAddress(), Toast.LENGTH_LONG).show();
-        Intent i = new Intent(DeviceList.this, DeviceControl.class);
-
-
-        i.putExtra(EXTRA_ADDRESS, selected_bd.getAddress());
-        startActivity(i);
-    }
 }

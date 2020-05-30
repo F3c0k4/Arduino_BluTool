@@ -9,20 +9,17 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.UUID;
 
 public class DeviceControl extends AppCompatActivity {
 
-    ToggleButton TglBtn_13;
+    ToggleButton Tgl_Btn_13;
     Button Btn_Dc;
 
     String DeviceAddr = null;
@@ -41,8 +38,8 @@ public class DeviceControl extends AppCompatActivity {
         }
         catch (NullPointerException e){}
         setContentView(R.layout.activity_device_control);
-        TglBtn_13 = (ToggleButton)findViewById(R.id.TglBtn13);
-        TglBtn_13.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Tgl_Btn_13 = (ToggleButton)findViewById(R.id.Tgl_Btn13);
+        Tgl_Btn_13.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
