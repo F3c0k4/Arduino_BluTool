@@ -6,17 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class StartScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.start_screen);
 
     }
 
     public void list_devices(View view){
-        Intent intent = new Intent(MainActivity.this,DeviceList.class);
+        Intent intent = new Intent(StartScreen.this,DeviceList.class);
         startActivity(intent);
     }
 }
