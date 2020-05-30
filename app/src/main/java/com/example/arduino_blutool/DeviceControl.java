@@ -51,7 +51,6 @@ public class DeviceControl extends AppCompatActivity {
                     try{
 
                         Bt_Socket.getOutputStream().write("13\n".getBytes());
-                        //Bt_Socket.getOutputStream().write("\n".getBytes());
                         msg("Output written");
 
                     }
@@ -75,14 +74,14 @@ public class DeviceControl extends AppCompatActivity {
     }
 
 
-    private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
+    private class ConnectBT extends AsyncTask<Void, Void, Void>
     {
         private boolean ConnectSuccess = true;
 
         @Override
         protected void onPreExecute()
         {
-            progress = ProgressDialog.show(DeviceControl.this, "Connecting...", "Please wait!!!");  //show a progress dialog
+            progress = ProgressDialog.show(DeviceControl.this, "Connecting...", "Please wait!!!");
         }
 
         @Override
@@ -92,21 +91,21 @@ public class DeviceControl extends AppCompatActivity {
             {
                 if (Bt_Socket == null || !isBtConnected)
                 {
-                    Bt_Adapter = BluetoothAdapter.getDefaultAdapter();//get the adapter
+                    Bt_Adapter = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice dispositivo = Bt_Adapter.getRemoteDevice(DeviceAddr);//check if remote device is available
                     Bt_Socket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    Bt_Socket.connect();//start connecting
+                    Bt_Socket.connect();
                 }
             }
             catch (IOException e)
             {
-                ConnectSuccess = false;//if the try failed, you can check the exception here
+                ConnectSuccess = false;
             }
             return null;
         }
         @Override
-        protected void onPostExecute(Void result) //after the execute
+        protected void onPostExecute(Void result)
         {
             super.onPostExecute(result);
 

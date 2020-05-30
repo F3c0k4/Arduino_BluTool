@@ -61,23 +61,21 @@ public class DeviceList extends AppCompatActivity {
 
 
 
-        // And the "magic" goes here
-        // This is for the "passive" state of the spinner
+
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
+
             TextView label = (TextView) super.getView(position, convertView, parent);
             label.setTextColor(Color.BLACK);
-            // Then you can get the current item using the values array (Users array) and the current position
-            // You can NOW reference each method you has created in your bean object (User class)
+
+
             label.setText(values[position].getName());
 
-            // And finally return your dynamic (or custom) view for each spinner item
             return label;
         }
 
-        // And here is when the "chooser" is popped up
-        // Normally is the same view, but you can customize it if you want
+
         @Override
         public View getDropDownView(int position, View convertView,
                                     ViewGroup parent) {
@@ -101,9 +99,8 @@ public class DeviceList extends AppCompatActivity {
         PairedSpinner = (Spinner)findViewById(R.id.spinner_paired);
         if(myBluetooth == null)
         {
-            //Show a mensag. that thedevice has no bluetooth adapter
+
             Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
-            //finish apk
             finish();
         }
         else
@@ -114,7 +111,7 @@ public class DeviceList extends AppCompatActivity {
             }
             else
             {
-                //Ask to the user turn the bluetooth on
+
                 Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(turnBTon,1);
             }
@@ -133,7 +130,7 @@ public class DeviceList extends AppCompatActivity {
         {
             for(BluetoothDevice bt : pairedDevices)
             {
-                list.add(bt.getName() + "\n" + bt.getAddress()); //Get the device's name and the address
+                list.add(bt.getName() + "\n" + bt.getAddress());
                 prntString = prntString + bt.getName() +"\n";
                 Toast.makeText(getApplicationContext(), prntString, Toast.LENGTH_LONG).show();
             }
@@ -158,8 +155,8 @@ public class DeviceList extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), selected_bd.getAddress(), Toast.LENGTH_LONG).show();
         Intent i = new Intent(DeviceList.this, DeviceControl.class);
 
-        //Change the activity.
-        i.putExtra(EXTRA_ADDRESS, selected_bd.getAddress()); //this will be received at ledControl (class) Activity
+
+        i.putExtra(EXTRA_ADDRESS, selected_bd.getAddress());
         startActivity(i);
     }
 }
