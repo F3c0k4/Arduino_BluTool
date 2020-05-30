@@ -91,6 +91,11 @@ public class DeviceList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         setContentView(R.layout.activity_device_list);
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
         PairedSpinner = (Spinner)findViewById(R.id.spinner_paired);

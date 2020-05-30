@@ -35,6 +35,11 @@ public class DeviceControl extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         setContentView(R.layout.activity_device_control);
         TglBtn_13 = (ToggleButton)findViewById(R.id.TglBtn13);
         TglBtn_13.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
