@@ -11,18 +11,17 @@ public class StartScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try
-        {
+        try {
             this.getSupportActionBar().hide();
+        } catch (NullPointerException e) {
         }
-        catch (NullPointerException e){}
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_screen);
 
     }
 
-    public void list_devices(View view){
-        Intent intent = new Intent(StartScreen.this,DeviceList.class);
+    public void list_devices(View view) {
+        Intent intent = new Intent(StartScreen.this, DeviceList.class);
         startActivity(intent);
     }
 }

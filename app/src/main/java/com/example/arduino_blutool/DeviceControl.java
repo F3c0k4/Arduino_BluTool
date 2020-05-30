@@ -27,32 +27,25 @@ public class DeviceControl extends AppCompatActivity {
     BluetoothAdapter Bt_Adapter = null;
     BluetoothSocket Bt_Socket = null;
     private boolean isBtConnected = false;
-    //SPP UUID. Look for it
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try
-        {
+        try {
             this.getSupportActionBar().hide();
+        } catch (NullPointerException e) {
         }
-        catch (NullPointerException e){}
         setContentView(R.layout.activity_device_control);
-        Tgl_Btn_13 = (ToggleButton)findViewById(R.id.Tgl_Btn13);
+        Tgl_Btn_13 = (ToggleButton) findViewById(R.id.Tgl_Btn13);
         Tgl_Btn_13.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (Bt_Socket!=null)
-                {
-                    try{
-
+                if (Bt_Socket != null) {
+                    try {
                         Bt_Socket.getOutputStream().write("13\n".getBytes());
                         msg("Output written");
-
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         msg("Error");
                     }
                 }
@@ -65,54 +58,44 @@ public class DeviceControl extends AppCompatActivity {
     }
 
 
-    private void msg(String s)
-    {
-        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+    private void msg(String s) {
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
 
-    private class ConnectBT extends AsyncTask<Void, Void, Void>
-    {
+    private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean ConnectSuccess = true;
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             progress = ProgressDialog.show(DeviceControl.this, "Connecting...", "Please wait!!!");
         }
 
         @Override
         protected Void doInBackground(Void... params) //connecting in background
         {
-            try
-            {
-                if (Bt_Socket == null || !isBtConnected)
-                {
+            try {
+                if (Bt_Socket == null || !isBtConnected) {
                     Bt_Adapter = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice dispositivo = Bt_Adapter.getRemoteDevice(DeviceAddr);//check if remote device is available
                     Bt_Socket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                     Bt_Socket.connect();
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 ConnectSuccess = false;
             }
             return null;
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            if (!ConnectSuccess)
-            {
+            if (!ConnectSuccess) {
                 msg("Connection Failed. Is it a SPP Bluetooth? Try again.");
                 finish();
-            }
-            else
-            {
+            } else {
                 msg("Connected.");
                 isBtConnected = true;
             }

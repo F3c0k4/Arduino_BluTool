@@ -26,59 +26,48 @@ public class DeviceList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try
-        {
+        try {
             this.getSupportActionBar().hide();
+        } catch (NullPointerException e) {
         }
-        catch (NullPointerException e){}
         setContentView(R.layout.activity_device_list);
         Bt_Adapter = BluetoothAdapter.getDefaultAdapter();
-        PairedSpinner = (Spinner)findViewById(R.id.Spinner_Paired);
-        if(Bt_Adapter == null)
-        {
+        PairedSpinner = (Spinner) findViewById(R.id.Spinner_Paired);
+        if (Bt_Adapter == null) {
 
             Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
             finish();
-        }
-        else
-        {
-            if (Bt_Adapter.isEnabled())
-            {
+        } else {
+            if (Bt_Adapter.isEnabled()) {
 
-            }
-            else
-            {
+            } else {
 
                 Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(turnBTon,1);
+                startActivityForResult(turnBTon, 1);
             }
             GeneratePairedDevicesList();
             FillSpinner();
         }
     }
-    public void GeneratePairedDevicesList()
-    {
+
+    public void GeneratePairedDevicesList() {
         paired_Devices = Bt_Adapter.getBondedDevices().toArray(new BluetoothDevice[0]);
         ArrayList list = new ArrayList();
         String prntString = "";
 
-        if (paired_Devices.length>0)
-        {
-            for(BluetoothDevice bt : paired_Devices)
-            {
+        if (paired_Devices.length > 0) {
+            for (BluetoothDevice bt : paired_Devices) {
                 list.add(bt.getName() + "\n" + bt.getAddress());
-                prntString = prntString + bt.getName() +"\n";
+                prntString = prntString + bt.getName() + "\n";
                 Toast.makeText(getApplicationContext(), prntString, Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {
+        } else {
             Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    void FillSpinner(){
+    void FillSpinner() {
         SpinAdapter spinner_adp1 = new SpinAdapter(this,
                 android.R.layout.simple_list_item_1, paired_Devices);
         spinner_adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -86,8 +75,8 @@ public class DeviceList extends AppCompatActivity {
 
     }
 
-    public void TakeControl(View view){
-        BluetoothDevice selected_bd = (BluetoothDevice)PairedSpinner.getSelectedItem();
+    public void TakeControl(View view) {
+        BluetoothDevice selected_bd = (BluetoothDevice) PairedSpinner.getSelectedItem();
         Toast.makeText(getApplicationContext(), selected_bd.getAddress(), Toast.LENGTH_LONG).show();
         Intent i = new Intent(DeviceList.this, DeviceControl.class);
 
@@ -95,7 +84,8 @@ public class DeviceList extends AppCompatActivity {
         i.putExtra(EXTRA_ADDRESS, selected_bd.getAddress());
         startActivity(i);
     }
-    public class SpinAdapter extends ArrayAdapter<BluetoothDevice>{
+
+    public class SpinAdapter extends ArrayAdapter<BluetoothDevice> {
 
         // Your sent context
         private Context context;
@@ -110,27 +100,23 @@ public class DeviceList extends AppCompatActivity {
         }
 
         @Override
-        public int getCount(){
+        public int getCount() {
             return values.length;
         }
 
         @Override
-        public BluetoothDevice getItem(int position){
+        public BluetoothDevice getItem(int position) {
             return values[position];
         }
 
-        public String getItemAddress(int position){
+        public String getItemAddress(int position) {
             return values[position].getAddress();
         }
+
         @Override
-        public long getItemId(int position){
+        public long getItemId(int position) {
             return position;
         }
-
-
-
-
-
 
 
         @Override
