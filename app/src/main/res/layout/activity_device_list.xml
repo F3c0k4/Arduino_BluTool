@@ -7,7 +7,7 @@
     tools:context=".DeviceList">
 
     <Spinner
-        android:id="@+id/spinner_paired"
+        android:id="@+id/Spinner_Paired"
         android:layout_width="409dp"
         android:layout_height="wrap_content" />
 
@@ -15,7 +15,7 @@
         android:id="@+id/button_start_control"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner_paired"
+        android:layout_below="@+id/Spinner_Paired"
         android:onClick="TakeControl"
         android:text="Start control" />
 </RelativeLayout>

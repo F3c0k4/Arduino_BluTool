@@ -8,7 +8,7 @@
 
 
     <ToggleButton
-        android:id="@+id/TglBtn13"
+        android:id="@+id/Tgl_Btn13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOff="P13"
