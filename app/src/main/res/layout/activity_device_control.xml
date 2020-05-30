@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     tools:context=".DeviceControl">
 
 
@@ -11,8 +12,29 @@
         android:id="@+id/Tgl_Btn13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/Tgl_Btn12"
+        android:layout_alignTop="@id/Tgl_Btn12"
         android:textOff="P13"
-        android:textOn="P13"
-        tools:layout_editor_absoluteX="68dp"
-        tools:layout_editor_absoluteY="110dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textOn="P13" />
+
+    <ToggleButton
+        android:id="@+id/Tgl_Btn12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:text="ToggleButton"
+        android:textOff="P12"
+        android:textOn="P12" />
+
+    <ToggleButton
+        android:id="@+id/Tgl_Btn11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/Tgl_Btn12"
+        android:layout_alignTop="@id/Tgl_Btn12"
+        android:text="ToggleButton"
+        android:textOff="P11"
+        android:textOn="P11" />
+</RelativeLayout>

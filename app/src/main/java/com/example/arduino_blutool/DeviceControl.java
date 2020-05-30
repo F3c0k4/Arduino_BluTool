@@ -20,6 +20,8 @@ import java.util.UUID;
 public class DeviceControl extends AppCompatActivity {
 
     ToggleButton Tgl_Btn_13;
+    ToggleButton Tgl_Btn_12;
+    ToggleButton Tgl_Btn_11;
     Button Btn_Dc;
 
     String DeviceAddr = null;
@@ -27,6 +29,7 @@ public class DeviceControl extends AppCompatActivity {
     BluetoothAdapter Bt_Adapter = null;
     BluetoothSocket Bt_Socket = null;
     private boolean isBtConnected = false;
+    CompoundButton.OnCheckedChangeListener Tgl_Btn_Listener;
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     @Override
@@ -38,23 +41,37 @@ public class DeviceControl extends AppCompatActivity {
         }
         setContentView(R.layout.activity_device_control);
         Tgl_Btn_13 = (ToggleButton) findViewById(R.id.Tgl_Btn13);
-        Tgl_Btn_13.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Tgl_Btn_12 = (ToggleButton) findViewById(R.id.Tgl_Btn12);
+        Tgl_Btn_11 = (ToggleButton) findViewById(R.id.Tgl_Btn11);
+
+        Tgl_Btn_Listener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (Bt_Socket != null) {
                     try {
-                        Bt_Socket.getOutputStream().write("13\n".getBytes());
-                        msg("Output written");
+                        switch(buttonView.getId()) {
+                            case R.id.Tgl_Btn13:
+                                Bt_Socket.getOutputStream().write("13\n".getBytes());
+                                break;
+                            case R.id.Tgl_Btn12:
+                                Bt_Socket.getOutputStream().write("12\n".getBytes());
+                                break;
+                            case R.id.Tgl_Btn11:
+                                Bt_Socket.getOutputStream().write("11\n".getBytes());
+                        }
                     } catch (IOException e) {
                         msg("Error");
                     }
                 }
-
             }
-        });
-        Intent newint = getIntent();
-        DeviceAddr = newint.getStringExtra(DeviceList.EXTRA_ADDRESS);
+        };
+        Tgl_Btn_13.setOnCheckedChangeListener(Tgl_Btn_Listener);
+        Tgl_Btn_12.setOnCheckedChangeListener(Tgl_Btn_Listener);
+        Tgl_Btn_11.setOnCheckedChangeListener(Tgl_Btn_Listener);
+        Intent intent = getIntent();
+        DeviceAddr = intent.getStringExtra(DeviceList.EXTRA_ADDRESS);
         new ConnectBT().execute();
+
     }
 
 
@@ -77,8 +94,8 @@ public class DeviceControl extends AppCompatActivity {
             try {
                 if (Bt_Socket == null || !isBtConnected) {
                     Bt_Adapter = BluetoothAdapter.getDefaultAdapter();
-                    BluetoothDevice dispositivo = Bt_Adapter.getRemoteDevice(DeviceAddr);//check if remote device is available
-                    Bt_Socket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+                    BluetoothDevice remote_device = Bt_Adapter.getRemoteDevice(DeviceAddr);//check if remote device is available
+                    Bt_Socket = remote_device.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                     Bt_Socket.connect();
                 }
